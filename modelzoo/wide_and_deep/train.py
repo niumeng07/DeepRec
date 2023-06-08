@@ -24,6 +24,7 @@ from tensorflow.python.client import timeline
 import json
 
 from tensorflow.python.ops import partitioned_variables
+from tensorflow.python.keras.saving import saved_model_experimental as keras_saved_model
 
 # Set to INFO for tracking training, default is WARN. ERROR for least messages
 tf.logging.set_verbosity(tf.logging.INFO)
@@ -586,6 +587,9 @@ def train(sess_config,
             sess.run([model.loss, model.train_op])
     print("Training completed.")
 
+    # export model for tfserving
+    if args.saved_model_dir is not None:
+        keras_saved_model.export_saved_model(model, args.saved_model_dir)
 
 def eval(sess_config, input_hooks, model, data_init_op, steps, checkpoint_dir):
     model.is_training = False
@@ -873,7 +877,7 @@ def get_arg_parser():
     parser.add_argument("--parquet_dataset", \
                         help='Whether to enable Parquet DataSet. Defualt to True.',
                         type=boolean_string,
-                        default=True)
+                        default=False)
     parser.add_argument("--parquet_dataset_shuffle", \
                         help='Whether to enable shuffle operation for Parquet Dataset. Default to False.',
                         type=boolean_string,
@@ -883,6 +887,10 @@ def get_arg_parser():
                         type=str,
                         choices=[None, 'localized', 'collective'],
                         default=None)
+    parser.add_argument("--saved_model_dir", \
+                        help='export model for tfserving',
+                        type=str,
+                        default='./result/saved_model/')
 
     return parser
 

@@ -8,3 +8,7 @@ The evaluation dataset for accuracy measurement is not available in the above li
 
 Download the train dataset(in csv format) from https://storage.googleapis.com/dataset-uploader/criteo-kaggle/large_version/train.csv
 
+
+
+wget https://storage.googleapis.com/dataset-uploader/criteo-kaggle/large_version/train.csv
+wget https://storage.googleapis.com/dataset-uploader/criteo-kaggle/large_version/eval.csv
